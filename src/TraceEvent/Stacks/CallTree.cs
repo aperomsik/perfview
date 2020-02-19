@@ -845,12 +845,12 @@ namespace Microsoft.Diagnostics.Tracing.Stacks
         #region private
         internal CallTreeNodeBase(string name, StackSourceFrameIndex id, CallTree container)
         {
-            // We use {} to express things that are not logically part of the name, so strip any 'real' {}
-            // because it confuses the upper level logic TODO: this is kind of a hack.
+            // We use {} to express things that are not logically part of the name. Replace any 'real' {}
+            // with fullwidth equivalents so we won't confuse the upper level logic.
             var idx = name.IndexOf('{');
             if (0 < idx)
             {
-                name = name.Substring(0, idx);
+                name = name.Replace("{", "\uFF5B").Replace("}", "\uFF5D");
             }
 
             m_name = name;
